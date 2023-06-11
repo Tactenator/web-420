@@ -1,0 +1,69 @@
+openapi: 3.0.0
+info: 
+  title: Composer API
+  version: "1.0"
+paths: 
+  /composers: 
+    get: 
+      summary: Returns the data for all composers
+      operationid: findAllComposers
+      tags:
+        - Composers
+      description: Returns a list of all composers from the composers API database
+      responses: 
+        "200":
+          description: "Successful retrieval of documents from the composer API"
+        "500":
+          description: "Server exceptions"
+        "501":
+          description: "MongoDB exceptions"
+    post: 
+      tags: 
+        - Composers
+      summary: Creates a new composer 
+      description: Creates and places a new composer the composer API database. 
+      operationid: createComposer
+      requestBody:
+        description: A user input describing the Composer object
+        content:
+          application/x-www-form-urlencoded: 
+            schema:
+              type: object
+              schema: 
+                  firstName:
+                    type: string
+                    required: true
+                  lastName:
+                    type: string
+                    required: true
+
+      responses: 
+        "200":
+          description: Successful creation and posting of a new composer to the composer API
+        "500":
+          description: "Server exceptions"
+        "501":
+          description: "MongoDB exceptions"
+
+    /composers/{id}:
+      get:
+        tags: 
+          - Composers
+        summary: Returns the data for a specified composer
+        description: Retrieves the data from the composer API for a specific composer
+        operationid: findComposerById
+        parameters: 
+          - in: path
+            name: id
+            schema: 
+            type: string
+            required: true
+            description: Numeric id of the composer
+        responses: 
+          "200":
+            description: 'Successful retrieval of the data of a specific composer'
+          "500":
+            description: "Server exceptions"
+          "501":
+            description: "MongoDB exceptions"
+  
