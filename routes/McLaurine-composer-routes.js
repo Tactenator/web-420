@@ -90,7 +90,7 @@ router.get('/composers/:id', async (req, res) => {
  *     requestBody:
  *       description: A user input describing the Composer object
  *       content:
- *         application/x-www-form-urlencoded:
+ *         application/json:
  *           schema:
  *             type: object
  *             schema:
