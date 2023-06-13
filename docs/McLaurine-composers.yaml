@@ -17,6 +17,7 @@ paths:
           description: "Server exceptions"
         "501":
           description: "MongoDB exceptions"
+          
     post: 
       tags: 
         - Composers
