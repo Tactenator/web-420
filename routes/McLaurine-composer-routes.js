@@ -3,6 +3,24 @@ const Composer = require('../models/McLaurine-composer')
 
 const router = express.Router();
 
+/**
+ * findAllFruits
+ * @openapi
+ * /composers:
+ *   get:
+ *     tags:
+ *       - Composers
+ *     description: Returns a list of all composers from the composers API database
+ *     summary: Returns the data for all composers
+ *     operationid: findAllComposers
+ *     responses:
+ *       '200':
+ *         description: "Successful retrieval of documents from the composer API"
+ *       '500':
+ *         description: "Server exceptions"
+ *       '501':
+ *         description: "MongoDB exceptions"
+ */
 router.get('/composers', async (req,res) => {
     try {
         Composer.find({}, function(err, composers) {
