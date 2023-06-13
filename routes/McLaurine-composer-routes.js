@@ -92,14 +92,14 @@ router.get('/composers/:id', async (req, res) => {
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             schema:
+ *             required:
+ *               - firstName
+ *               - lastName
+ *             properties:
  *               firstName:
- *                 type: string
- *                 required: true
+ *                type: string
  *               lastName:
- *                 type: string
- *                 required: true
+ *                type: string
  *     responses:
  *       '200':
  *         description: Successful creation and posting of a new composer to the composer API
