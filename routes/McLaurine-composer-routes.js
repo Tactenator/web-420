@@ -23,7 +23,7 @@ const router = express.Router();
  */
 router.get('/composers', async (req,res) => {
     try {
-        Composer.find({}, function(err, composers) {
+        await Composer.find({}, function(err, composers) {
             if(err) {
                 res.status(501).send({
                     'message': `MongoDB Exception: ${err}`
@@ -38,6 +38,7 @@ router.get('/composers', async (req,res) => {
             'message': `Server Exception: ${e.message}`
         })
     }
+
 })
 
 /**

@@ -6,7 +6,6 @@ require('dotenv').config({path:__dirname+'/.env'});
 const mongoose = require('mongoose');
 
 const app = express();
-const server = http.createServer(app)
 const composerRoutes = require('./routes/McLaurine-composer-routes')
 
 app.use(express.json())
@@ -36,15 +35,15 @@ app.use(function (req, res, next) {
     next();
     });
 
-app.use('/api-docs', swaggerUIExpress.serve, swaggerUIExpress.setup(openapiSpecification));
 app.use('/composers', composerRoutes)
+app.use('/api-docs', swaggerUIExpress.serve, swaggerUIExpress.setup(openapiSpecification));
 
-mongoose.connect(MONGO)
-    .then(() => {
-        server.listen(port, () => {
-            console.log('Listening on port', process.env.PORT);
-        })
-    })
-    .catch((error) => {
-        console.log(error);
-    })
+mongoose.connect(MONGO).then(() => {
+    console.log('Connection to MongoDB database was successful');
+}).catch(err => {
+    console.log('MongoDB Error: ' + err.message);
+});
+
+app.listen(port, () => {
+    console.log('Listening on port', process.env.PORT);
+})
