@@ -35,7 +35,7 @@ app.use(function (req, res, next) {
     next();
     });
 
-app.use('/composers', composerRoutes)
+app.use('/', composerRoutes)
 app.use('/api-docs', swaggerUIExpress.serve, swaggerUIExpress.setup(openapiSpecification));
 
 mongoose.connect(MONGO).then(() => {

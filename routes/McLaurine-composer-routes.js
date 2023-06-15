@@ -4,7 +4,7 @@ const Composer = require('../models/McLaurine-composer')
 const router = express.Router();
 
 /**
- * findAllFruits
+ * findAllComposers
  * @openapi
  * /composers:
  *   get:
@@ -22,23 +22,26 @@ const router = express.Router();
  *         description: "MongoDB exceptions"
  */
 router.get('/composers', async (req,res) => {
-    try {
-        await Composer.find({}, function(err, composers) {
-            if(err) {
-                res.status(501).send({
-                    'message': `MongoDB Exception: ${err}`
-                })
-            }else {
-                res.json(composers);
-            }
-        })
-    } catch(e) {
-        console.log(e)
-        res.status(500).send({
-            'message': `Server Exception: ${e.message}`
-        })
-    }
+    // try {
+    //     await Composer.find({}, function(err, composers) {
+    //         if(err) {
+    //             res.status(501).send({
+    //                 'message': `MongoDB Exception: ${err}`
+    //             })
+    //         }else {
+    //             res.json(composers);
+    //         }
+    //     })
+    // } catch(e) {
+    //     console.log(e)
+    //     res.status(500).send({
+    //         'message': `Server Exception: ${e.message}`
+    //     })
+    // }
 
+    const composers = await Composer.find({ })
+
+    res.status(200).json(composers); 
 })
 
 /**
