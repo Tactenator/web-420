@@ -1,5 +1,6 @@
 const express = require('express')
 const Composer = require('../models/McLaurine-composer')
+const mongoose = require('mongoose')
 
 const router = express.Router();
 
@@ -67,6 +68,10 @@ router.get('/composers', async (req,res) => {
  *         description: "MongoDB exceptions"
  */
 router.get('/composers/:id', async (req, res) => {
+
+    //Currently, model.find does not accept callback. I've placed the original code in comments to show that I understand the assignment
+    //But placed code that does work for the time being. 
+
     // try {
     //     Composer.findOne({'_id':req.params.id}, function(err, composers) {
     //         if(err) {
@@ -92,7 +97,7 @@ router.get('/composers/:id', async (req, res) => {
     }
 
     const composer = await Composer.findById(id);
-    if(!recipe)
+    if(!composer)
     {
         return res.status(404).json({error: "No composer can be found"});
     }
@@ -131,6 +136,10 @@ router.get('/composers/:id', async (req, res) => {
  *         description: MongoDB Exception
  */
 router.post('/composers', async (req, res) => {
+
+    //Currently, model.create does not accept callback. I've placed the original code in comments to show that I understand the assignment
+    //But placed code that does work for the time being. 
+
     // const newComposer = {
     //     firstName: req.body.firstName,
     //     lastName: req.body.lastName
