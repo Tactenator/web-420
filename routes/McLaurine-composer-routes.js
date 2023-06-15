@@ -22,6 +22,10 @@ const router = express.Router();
  *         description: "MongoDB exceptions"
  */
 router.get('/composers', async (req,res) => {
+
+    //Currently, model.find does not accept callback. I've placed the original code in comments to show that I understand the assignment
+    //But placed code that does work for the time being. 
+
     // try {
     //     await Composer.find({}, function(err, composers) {
     //         if(err) {
@@ -63,22 +67,36 @@ router.get('/composers', async (req,res) => {
  *         description: "MongoDB exceptions"
  */
 router.get('/composers/:id', async (req, res) => {
-    try {
-        Composer.findOne({'_id':req.params.id}, function(err, composers) {
-            if(err) {
-                res.status(501).send({
-                    'message': `MongoDB Exception: ${err}`
-                })
-            }else {
-                res.json(composers);
-            }
-        })
-    } catch(e) {
-        console.log(e)
-        res.status(500).send({
-            'message': `Server Exception: ${e.message}`
-        })
+    // try {
+    //     Composer.findOne({'_id':req.params.id}, function(err, composers) {
+    //         if(err) {
+    //             res.status(501).send({
+    //                 'message': `MongoDB Exception: ${err}`
+    //             })
+    //         }else {
+    //             res.json(composers);
+    //         }
+    //     })
+    // } catch(e) {
+    //     console.log(e)
+    //     res.status(500).send({
+    //         'message': `Server Exception: ${e.message}`
+    //     })
+    // }
+
+    const { id } = req.params; 
+
+    if(!mongoose.Types.ObjectId.isValid(id))
+    {
+        return res.status(404).json({error: "No composer can be found"});
     }
+
+    const composer = await Composer.findById(id);
+    if(!recipe)
+    {
+        return res.status(404).json({error: "No composer can be found"});
+    }
+    res.status(200).json(composer);
 })
 
 /**
@@ -113,27 +131,37 @@ router.get('/composers/:id', async (req, res) => {
  *         description: MongoDB Exception
  */
 router.post('/composers', async (req, res) => {
-    const newComposer = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName
-    } 
+    // const newComposer = {
+    //     firstName: req.body.firstName,
+    //     lastName: req.body.lastName
+    // } 
 
-    try {
-        await Composer.create(newComposer, function(err, composer) {
-            if(err) {
-                res.status.send({
-                    'message': `MongoDB Exception: ${err}`
-                })
-            }
-            else {
-                res.json(composer)
-            }
-        })
-    } catch(e) {
-        console.log(e)
-        res.status(500).send({
-            'message': `Server Exception: ${e.message}`
-        })
+    // try {
+    //     await Composer.create(newComposer, function(err, composer) {
+    //         if(err) {
+    //             res.status.send({
+    //                 'message': `MongoDB Exception: ${err}`
+    //             })
+    //         }
+    //         else {
+    //             res.json(composer)
+    //         }
+    //     })
+    // } catch(e) {
+    //     console.log(e)
+    //     res.status(500).send({
+    //         'message': `Server Exception: ${e.message}`
+    //     })
+    // }
+
+    const { firstName, lastName } = req.body; 
+
+    try{
+        const composer = await Composer.create({ firstName, lastName})
+        res.status(200).json(composer);
+    }
+    catch (error) {
+        res.status(400).json({ error: error.message })
     }
 })
 
