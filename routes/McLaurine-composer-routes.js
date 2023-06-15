@@ -29,7 +29,7 @@ router.get('/composers', async (req,res) => {
                     'message': `MongoDB Exception: ${err}`
                 })
             }else {
-                res.status(200).json(composers);
+                res.json(composers);
             }
         })
     } catch(e) {
@@ -66,7 +66,7 @@ router.get('/composers/:id', async (req, res) => {
                     'message': `MongoDB Exception: ${err}`
                 })
             }else {
-                res.status(200).json(composers);
+                res.json(composers);
             }
         })
     } catch(e) {
@@ -122,7 +122,7 @@ router.post('/composers', async (req, res) => {
                 })
             }
             else {
-                res.status(200).json(composer)
+                res.json(composer)
             }
         })
     } catch(e) {
