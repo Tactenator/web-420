@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 const app = express();
 const server = http.createServer(app)
+const composerRoutes = require('./routes/McLaurine-composer-routes')
 
 app.use(express.json())
 app.use(express.urlencoded({'extended': true}))
@@ -28,6 +29,7 @@ const options = {
 const openapiSpecification = swaggerJSDoc(options);
 
 app.use('/api-docs', swaggerUIExpress.serve, swaggerUIExpress.setup(openapiSpecification));
+app.use('/composers', composerRoutes)
 
 mongoose.connect(MONGO)
     .then(() => {
