@@ -15,7 +15,7 @@ const router = express.Router();
 /**
  * findAllComposers
  * @openapi
- * /composers:
+ * /api/composers:
  *   get:
  *     tags:
  *       - Composers
@@ -60,7 +60,7 @@ router.get('/composers', async (req,res) => {
 /**
  * findComposerById
  * @openapi
- * /composers/:id:
+ * /api/composers/:id:
  *   get:
  *     tags:
  *       - Composers
@@ -115,7 +115,7 @@ router.get('/composers/:id', async (req, res) => {
 /**
  * createComposer
  * @openapi
- * /composers:
+ * /api/composers:
  *   post:
  *     tags:
  *       - Composers

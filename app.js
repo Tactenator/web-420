@@ -52,7 +52,7 @@ app.use(function (req, res, next) {
     });
 
 // Initializes the routes. 
-app.use('/', composerRoutes)
+app.use('/api', composerRoutes)
 //Initializes the api-docs utilizing swaggerUI
 app.use('/api-docs', swaggerUIExpress.serve, swaggerUIExpress.setup(openapiSpecification));
 
