@@ -1,3 +1,11 @@
+/*
+    ==================
+    Title: mclaurine-composer-routes.js, 
+    Author: Trevor McLaurine
+    Date: 6/17/2023
+    Description: Initializes the routes used for the composer API
+*/
+
 const express = require('express')
 const Composer = require('../models/McLaurine-composer')
 const mongoose = require('mongoose')

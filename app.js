@@ -1,3 +1,10 @@
+/*
+    ==================
+    Title: app.js, 
+    Author: Trevor McLaurine
+    Date: 6/01/2023
+    Description: An application that begins a server for the Composer API
+*/
 const express = require('express')
 const http = require('http');
 const swaggerUIExpress = require('swagger-ui-express');

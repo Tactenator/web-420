@@ -1,3 +1,11 @@
+/*
+    ==================
+    Title: mclaurine-composer.js, 
+    Author: Trevor McLaurine
+    Date: 6/17/2023
+    Description: Initializes the composer schema
+*/
+
 const mongoose = require('mongoose');
 
 //initializes the composer Schema
