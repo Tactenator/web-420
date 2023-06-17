@@ -3,7 +3,7 @@ info:
   title: Composer API
   version: "1.0"
 paths: 
-  /composers: 
+  /api/composers: 
     get: 
       summary: Returns the data for all composers
       operationid: findAllComposers
