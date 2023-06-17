@@ -46,7 +46,7 @@ paths:
         "501":
           description: "MongoDB exceptions"
 
-    /composers/{id}:
+    /api/composers/{id}:
       get:
         tags: 
           - Composers
