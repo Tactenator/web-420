@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+//initializes the composer Schema
 const composerSchema = new mongoose.Schema({
     "firstName":
     { 
@@ -15,4 +16,5 @@ const composerSchema = new mongoose.Schema({
     }
 });
 
+//exports the schema 
 module.exports = mongoose.model('Composer', composerSchema);
