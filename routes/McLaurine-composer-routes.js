@@ -52,8 +52,10 @@ router.get('/composers', async (req,res) => {
     //     })
     // }
 
+    //creates an instance of a composer and calls the database to find all composers.
     const composers = await Composer.find({ })
 
+    //if successful, sets status to 200 and returns the list of composers.
     res.status(200).json(composers); 
 })
 
@@ -97,18 +99,24 @@ router.get('/composers/:id', async (req, res) => {
     //     })
     // }
 
+    //grabs the id from the URL parameters
     const { id } = req.params; 
 
+    //Checks to see if the ID from the parameters is valid
     if(!mongoose.Types.ObjectId.isValid(id))
     {
+        //returns an error message stating that no composer could be found.
         return res.status(404).json({error: "No composer can be found"});
     }
 
+    //searches for composer based on the id variable.
     const composer = await Composer.findById(id);
     if(!composer)
     {
+        //if there is no composer with that id, returns status 404 and a message that composer can't be found
         return res.status(404).json({error: "No composer can be found"});
     }
+    //if successful, returns composer object 
     res.status(200).json(composer);
 })
 
@@ -171,13 +179,17 @@ router.post('/composers', async (req, res) => {
     //     })
     // }
 
+    //grabs the values of the variables from the request body 
     const { firstName, lastName } = req.body; 
 
     try{
+        //creates a new composer based on the values from the request body
         const composer = await Composer.create({ firstName, lastName})
+        //if successful, creates a new composer
         res.status(200).json(composer);
     }
     catch (error) {
+        //if an error occurs, an error message is displayed in the console
         res.status(400).json({ error: error.message })
     }
 })
