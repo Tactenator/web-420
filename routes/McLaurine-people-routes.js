@@ -138,11 +138,11 @@ router.post('/people', async (req, res) => {
     //     })
     // }
 
-    const { firstName, lastName } = req.body; 
+    const { firstName, lastName, roles, dependents, birthDate } = req.body; 
 
     try{
-        const composer = await Composer.create({ firstName, lastName})
-        res.status(200).json(composer);
+        const person = await People.create({ firstName, lastName, roles, dependents, birthDate })
+        res.status(200).json(person);
     }
     catch (error) {
         res.status(400).json({ error: error.message })
