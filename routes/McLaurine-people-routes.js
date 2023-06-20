@@ -115,20 +115,23 @@ router.post('/people', async (req, res) => {
     //Currently, model.create does not accept callback. I've placed the original code in comments to show that I understand the assignment
     //But placed code that does work for the time being. 
 
-    // const newComposer = {
+    // const newPerson = {
     //     firstName: req.body.firstName,
-    //     lastName: req.body.lastName
+    //     lastName: req.body.lastName,
+    //     roles: req.body.roles,
+    //     dependents: req.body.dependents,
+    //     birthDate: req.body.birthDate
     // } 
 
     // try {
-    //     await Composer.create(newComposer, function(err, composer) {
+    //     await Composer.create(newPerson, function(err, person) {
     //         if(err) {
     //             res.status.send({
     //                 'message': `MongoDB Exception: ${err}`
     //             })
     //         }
     //         else {
-    //             res.json(composer)
+    //             res.json(person)
     //         }
     //     })
     // } catch(e) {
@@ -141,8 +144,8 @@ router.post('/people', async (req, res) => {
     const { firstName, lastName, roles, dependents, birthDate } = req.body; 
 
     try{
-        const person = await People.create({ firstName, lastName, roles, dependents, birthDate })
-        res.status(200).json(person);
+        const newPerson = await People.create({ firstName, lastName, roles, dependents, birthDate })
+        res.status(200).json(newPerson);
     }
     catch (error) {
         res.status(400).json({ error: error.message })
