@@ -31,7 +31,7 @@ const router = express.Router();
  *       '501':
  *         description: "MongoDB exceptions"
  */
-router.get('/composers', async (req,res) => {
+router.get('/people', async (req,res) => {
 
     //Currently, model.find does not accept callback. I've placed the original code in comments to show that I understand the assignment
     //But placed code that does work for the time being. 
@@ -65,11 +65,10 @@ router.get('/composers', async (req,res) => {
  *   post:
  *     tags:
  *       - People
- *     operationid: createPerson
- *     description: Creates and places a new person in the people API database.
- *     summary: Creates a new person
+ *     name: createPerson
+ *     summary: Creates a new person for the people API
  *     requestBody:
- *       description: A user input describing the Person  object
+ *       description: Information about the person
  *       content:
  *         application/json:
  *           schema:
@@ -81,36 +80,37 @@ router.get('/composers', async (req,res) => {
  *               - birthDate
  *             properties:
  *               firstName:
- *                type: string
+ *                 type: string
  *               lastName:
- *                type: string
- *               roles: 
- *                type: array
- *                items: 
- *                  type: object
- *                  properties:
- *                    text
- *                      type: string
- *              dependents: 
- *                type: array
- *                items:
- *                  type: object
- *                  properties:
- *                    firstName:
- *                      type: string
- *                    lastName:
- *                      type: string
- *              birthDate:
- *                type: string
+ *                 type: string
+ *               roles:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     text:
+ *                       type: string
+ *               dependents:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     firstName:
+ *                       type: string
+ *                     lastName:
+ *                       type: string
+ *               birthDate:
+ *                 type: string
+ *                     
  *     responses:
  *       '200':
- *         description: Successful creation and posting of a new composer to the composer API
+ *         description: Student added to MongoDB Atlas
  *       '500':
  *         description: Server Exception
  *       '501':
  *         description: MongoDB Exception
  */
-router.post('/composers', async (req, res) => {
+router.post('/people', async (req, res) => {
 
     //Currently, model.create does not accept callback. I've placed the original code in comments to show that I understand the assignment
     //But placed code that does work for the time being. 
