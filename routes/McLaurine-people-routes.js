@@ -104,7 +104,7 @@ router.get('/people', async (req,res) => {
  *                     
  *     responses:
  *       '200':
- *         description: Student added to MongoDB Atlas
+ *         description: Person added to People API
  *       '500':
  *         description: Server Exception
  *       '501':
