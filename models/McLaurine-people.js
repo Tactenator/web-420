@@ -12,7 +12,7 @@ const Schema = mongoose.Schema;
 
 const roleSchema = new Schema({
     "text": {
-        type: string
+        type: String
     }
 })
 
@@ -40,7 +40,7 @@ const personSchema = new mongoose.Schema({
     "roles": [roleSchema],
     "dependents": [dependentSchema],
     "birthDate": {
-        type: string
+        type: String
     }
 });
 
