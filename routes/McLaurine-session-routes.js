@@ -46,3 +46,5 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
     //do login stuff
 })
+
+module.exports = router; 

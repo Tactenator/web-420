@@ -15,7 +15,7 @@ const router = express.Router();
 /**
  * findAllPersons
  * @openapi
- * /api/people:
+ * /api/persons:
  *   get:
  *     tags:
  *       - People
@@ -30,7 +30,7 @@ const router = express.Router();
  *       '501':
  *         description: "MongoDB exceptions"
  */
-router.get('/people', async (req,res) => {
+router.get('/persons', async (req,res) => {
 
     //Currently, model.find does not accept callback. I've placed the original code in comments to show that I understand the assignment
     //But placed code that does work for the time being. 
@@ -60,7 +60,7 @@ router.get('/people', async (req,res) => {
 /**
  * createPerson
  * @openapi
- * /api/people:
+ * /api/persons:
  *   post:
  *     tags:
  *       - People
@@ -109,7 +109,7 @@ router.get('/people', async (req,res) => {
  *       '501':
  *         description: MongoDB Exception
  */
-router.post('/people', async (req, res) => {
+router.post('/persons', async (req, res) => {
 
     //Currently, model.create does not accept callback. I've placed the original code in comments to show that I understand the assignment
     //But placed code that does work for the time being. 

@@ -9,7 +9,6 @@ const express = require('express')
 const http = require('http');
 const swaggerUIExpress = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
-require('dotenv').config({path:__dirname+'/.env'});
 const mongoose = require('mongoose');
 
 //Initializes express
@@ -25,9 +24,9 @@ app.use(express.json())
 app.use(express.urlencoded({'extended': true}))
 
 //Grabs the port number from the .env file. If none, defaults to 3000
-const port = process.env.PORT || 3000; 
+const port = 3000; 
 //Grabs the MongoDB connect URI
-const MONGO = process.env.MONGO_URI;
+const MONGO = 'mongodb+srv://web420_user:s3cret@web340db.93lxfky.mongodb.net/web420DB';
 
 // Sets the options object for Open API
 const options = {
