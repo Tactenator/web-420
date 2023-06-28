@@ -21,7 +21,7 @@ async function findUser (user) {
 }
 
 router.post('/signup', async (req, res) => {
-    //do signup stuff
+    //do signup stuff - need to add password hashing
     let newUser = {
         user: req.body.userName,
         password: req.body.password,
