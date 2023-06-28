@@ -7,7 +7,6 @@
 */
 
 const express = require('express')
-const Composer = require('../models/McLaurine-composer')
 const People = require('../models/McLaurine-people')
 const mongoose = require('mongoose')
 

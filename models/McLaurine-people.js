@@ -3,7 +3,7 @@
     Title: mclaurine-people.js, 
     Author: Trevor McLaurine
     Date: 6/20/2023
-    Description: Initializes the composer schema
+    Description: Initializes the people schema
 */
 
 const mongoose = require('mongoose');
