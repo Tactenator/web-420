@@ -16,7 +16,8 @@ const saltRounds = 10;
 const router = express.Router();
 
 async function findUser (user) {
-    let userFound = User.findOne({ 'userName': user })
+    let userFound = await User.findOne({ 'userName': user })
+    console.log(userFound)
     return userFound
 }
 
@@ -28,9 +29,9 @@ async function findUser (user) {
  *     tags:
  *       - User
  *     description: Sign Up API
- *     summary: Create a n
+ *     summary: Create a new user and add the user to the database
  *     requestBody:
- *       description: creation of username
+ *       description: Create a new user
  *       content:
  *         application/json:
  *           schema:
@@ -59,7 +60,7 @@ async function findUser (user) {
 router.post('/signup', async (req, res) => {
     //do signup stuff - need to add password hashing
     let newUser = {
-        user: req.body.userName,
+        userName: req.body.userName,
         password: req.body.password,
         email: req.body.email
     }
@@ -67,7 +68,7 @@ router.post('/signup', async (req, res) => {
     try {
         let user = findUser(newUser.user)
 
-        if(!user) {
+        if(user != null) {
             // Again, callbacks aren't working, but I still wanted to add the code that shows that I understand the assignment. 
 
             // newUser.password = bcrypt.hashSync(req.body.password, saltRounds);

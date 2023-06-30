@@ -20,7 +20,9 @@ const userSchema = new mongoose.Schema({
     {
         type: String, 
     },
-    "emailAddress": []
+    "emailAddress": {
+        type: String
+    }
     
 });
 
