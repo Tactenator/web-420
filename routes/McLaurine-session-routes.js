@@ -1,9 +1,9 @@
 /*
     ==================
-    Title: mclaurine-composer-routes.js, 
+    Title: mclaurine-session-routes.js, 
     Author: Trevor McLaurine
-    Date: 6/17/2023
-    Description: Initializes the routes used for the composer API
+    Date: 6/30/2023
+    Description: Initializes the routes used for the users API
 */
 
 const express = require('express')
