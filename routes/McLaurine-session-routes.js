@@ -17,7 +17,6 @@ const router = express.Router();
 
 async function findUser (user) {
     let userFound = await User.findOne({ 'userName': user })
-    console.log(userFound)
     return userFound
 }
 
@@ -138,12 +137,12 @@ router.post('/login', async (req, res) => {
     } 
 
     try{
-        let findUser = findUser( user.userName )
-        if(findUser) {
-            let passwordIsValid = bcrypt.compareSync(user.password, findUser.password)
+        let searchForUser = await findUser( user.userName )
+        if(searchForUser) {
+            let passwordIsValid = bcrypt.compareSync(user.password, searchForUser.password)
             if(passwordIsValid){
                 console.log(`User ${findUser.userName} is logged in.`)
-                res.status(200).send({ message: `User ${findUser.userName} is logged in.` })
+                res.status(200).send({ message: `User ${searchForUser.userName} is logged in.` })
             }
         }
         else {
