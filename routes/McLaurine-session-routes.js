@@ -17,6 +17,7 @@ const router = express.Router();
 
 async function findUser (user) {
     let userFound = await User.findOne({ 'userName': user })
+
     return userFound
 }
 
@@ -65,9 +66,9 @@ router.post('/signup', async (req, res) => {
     }
 
     try {
-        let user = findUser(newUser.userName)
+        let user = await findUser(newUser.userName)
 
-        if(!user) {
+        if(user === null) {
             // Again, callbacks aren't working, but I still wanted to add the code that shows that I understand the assignment. 
 
             // newUser.password = bcrypt.hashSync(req.body.password, saltRounds);
