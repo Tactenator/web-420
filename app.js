@@ -68,5 +68,5 @@ mongoose.connect(MONGO).then(() => {
 
 //Begins the server to listen on the pre-defined port.
 app.listen(port, () => {
-    console.log('Listening on port', process.env.PORT);
+    console.log('Listening on port', port);
 })
