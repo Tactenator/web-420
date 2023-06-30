@@ -62,13 +62,13 @@ router.post('/signup', async (req, res) => {
     let newUser = {
         userName: req.body.userName,
         password: req.body.password,
-        email: req.body.email
+        emailAddress: req.body.emailAddress
     }
 
     try {
-        let user = findUser(newUser.user)
+        let user = findUser(newUser.userName)
 
-        if(user != null) {
+        if(!user) {
             // Again, callbacks aren't working, but I still wanted to add the code that shows that I understand the assignment. 
 
             // newUser.password = bcrypt.hashSync(req.body.password, saltRounds);
@@ -83,8 +83,9 @@ router.post('/signup', async (req, res) => {
             //       res.send({ message: 'New User Registered.' });
             //     }
             //   });
-            await User.create(newUser)
+
             newUser.password = bcrypt.hashSync(req.body.password, saltRounds);
+            await User.create(newUser)
             console.log('User logged in')
             res.status(200).json(newUser)
         }
