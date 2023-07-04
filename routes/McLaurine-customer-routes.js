@@ -220,13 +220,23 @@ router.get('/customers/:username/invoices', async (req,res) => {
     //     })
     // }
 
-    const user = req.body.userName;
+    try {
+        const user = req.body.userName;
 
-    //creates an instance of a composer and calls the database to find all composers.
-    const customers = await Customers.findOne({ 'userName': user })
-
-    //if successful, sets status to 200 and returns the list of composers.
-    res.status(200).json(customers); 
+        //creates an instance of a composer and calls the database to find all composers.
+        const customers = await Customers.findOne({ 'userName': user })
+        if(!customers){
+            res.status(501).send({ 'message': 'Mongo Exception Error'})
+        }
+        else{
+            //if successful, sets status to 200 and returns the list of composers.
+            res.status(200).json(customers); 
+        }
+    }
+    catch(e) {
+        //add error message
+        res.status(500).send({ 'message': `Server Exception: ${e.message}`})
+    }
 })
 
 module.exports = router; 
