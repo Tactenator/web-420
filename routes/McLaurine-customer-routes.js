@@ -58,7 +58,7 @@ router.post('/persons', async (req,res) => {
         }
     }
     catch (error) {
-        res.status(400).json({ error: error.message })
+        res.status(501).json({ 'message': `Server Exception: ${error.message}`  })
     }
 })
 
@@ -154,22 +154,27 @@ router.post('/customers/:username/invoices', async (req, res) => {
     try{
         const username  = req.params.username;
         const user = Customers.find({ 'userName': username })
+        if(!user){
+            res.status(501).send({ 'message': 'MongoDB Exception'})
+        }
+        else
+        {
+            const newInvoice = {
+                subtotal: req.body.subtotal,
+                tax: req.body.tax,
+                dateCreated: req.body.dateCreated,
+                dateShipped: req.body.dateShipped, 
+                lineItems: req.body.lineItems
+            }   
+        
+            user.invoices.push(newInvoice)
     
-        const newInvoice = {
-            subtotal: req.body.subtotal,
-            tax: req.body.tax,
-            dateCreated: req.body.dateCreated,
-            dateShipped: req.body.dateShipped, 
-            lineItems: req.body.lineItems
-        }   
-    
-        user.invoices.push(newInvoice)
-
-        //add status code
-        await Customers.save(user)
+            //add status code
+            await Customers.save(user)
+        }
     }
     catch (error) {
-        res.status(400).json({ error: error.message })
+        res.status(500).send({ 'message': `Server Exception: ${error.message} `})
     }
 })
 
