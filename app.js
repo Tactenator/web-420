@@ -18,6 +18,7 @@ const app = express();
 const composerRoutes = require('./routes/McLaurine-composer-routes')
 const peopleRoutes = require('./routes/McLaurine-people-routes')
 const sessionRoutes = require('./routes/McLaurine-session-routes')
+const customerRoutes = require('./routes/McLaurine-customer-routes')
 
 //Tells express to use JSON
 app.use(express.json())
@@ -56,6 +57,7 @@ app.use(function (req, res, next) {
 app.use('/api', composerRoutes)
 app.use('/api', peopleRoutes)
 app.use('/api', sessionRoutes)
+app.use('/api', customerRoutes)
 //Initializes the api-docs utilizing swaggerUI
 app.use('/api-docs', swaggerUIExpress.serve, swaggerUIExpress.setup(openapiSpecification));
 

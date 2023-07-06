@@ -45,11 +45,11 @@ const router = express.Router();
  *       '501':
  *         description: MongoDB Exception
  */
-router.post('/persons', async (req,res) => {
+router.post('/customers', async (req,res) => {
     const { firstName, lastName, userName } = req.body; 
 
     try{
-        const newCustomer = await People.create({ firstName, lastName, userName })
+        const newCustomer = await Customers.create({ firstName, lastName, userName })
         if(!newCustomer){
             res.status(500).send( { 'message': `MongoDB Exception 501`})
         }
@@ -58,7 +58,7 @@ router.post('/persons', async (req,res) => {
         }
     }
     catch (error) {
-        res.status(501).json({ 'message': `Server Exception: ${error.message}`  })
+        res.status(501).json({ 'message': `Server Exception: ${error.message}` })
     }
 })
 
@@ -181,14 +181,14 @@ router.post('/customers/:username/invoices', async (req, res) => {
 /**
  * findAllInvoicesByUserName
  * @openapi
- * /api/customers/:username/invoices:
+ * /api/customers/{userName}/invoices:
  *   get:
  *     tags:
  *       - Customers
  *     description: Returns a list of all composers from the composers API database
  *     summary: Returns the data for all composers
  *     parameters:
- *       - name: username
+ *       - name: userName
  *         in: path
  *         required: true
  *         description: Username that belongs to the invoice 
@@ -203,7 +203,7 @@ router.post('/customers/:username/invoices', async (req, res) => {
  *       '501':
  *         description: "MongoDB exceptions"
  */
-router.get('/customers/:username/invoices', async (req,res) => {
+router.get('/customers/:userName/invoices', async (req,res) => {
 
     //Currently, model.find does not accept callback. I've placed the original code in comments to show that I understand the assignment
     //But placed code that does work for the time being. 
@@ -226,14 +226,13 @@ router.get('/customers/:username/invoices', async (req,res) => {
     // }
 
     try {
-        const user = req.body.userName;
-
-        //creates an instance of a composer and calls the database to find all composers.
-        const customers = await Customers.findOne({ 'userName': user })
+       
+        const customers = await Customers.findOne({ 'userName': req.params.userName })
         if(!customers){
             res.status(501).send({ 'message': 'Mongo Exception Error'})
         }
-        else{
+        else
+        {
             //if successful, sets status to 200 and returns the list of composers.
             res.status(200).json(customers); 
         }
