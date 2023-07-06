@@ -65,14 +65,14 @@ router.post('/customers', async (req,res) => {
 /**
  * createInvoiceByUserName
  * @openapi
- * /api/customers/:username/invoices:
+ * /api/customers/{userName}/invoices:
  *   post:
  *     tags:
  *       - Customers
  *     name: createInvoiceByUserName
  *     summary: Creates a new invoice based on the username
  *     parameters:
- *      - name: username
+ *      - name: userName
  *        in: path
  *        required: true
  *        description: Username that belongs to the invoice 
@@ -109,9 +109,6 @@ router.post('/customers', async (req,res) => {
  *                       type: string
  *                     quantity: 
  *                       type: string
- *               birthDate:
- *                 type: string
- *                     
  *     responses:
  *       '200':
  *         description:  New invoice created
@@ -120,7 +117,7 @@ router.post('/customers', async (req,res) => {
  *       '501':
  *         description: MongoDB Exception
  */
-router.post('/customers/:username/invoices', async (req, res) => {
+router.post('/customers/:userName/invoices', async (req, res) => {
 
     //Currently, model.create does not accept callback. I've placed the original code in comments to show that I understand the assignment
     //But placed code that does work for the time being. 
@@ -152,8 +149,8 @@ router.post('/customers/:username/invoices', async (req, res) => {
     // }
 
     try{
-        const username  = req.params.username;
-        const user = Customers.find({ 'userName': username })
+        const user = await Customers.findOne({ 'userName': req.params.userName })
+        console.log(user)
         if(!user){
             res.status(501).send({ 'message': 'MongoDB Exception'})
         }
@@ -166,11 +163,12 @@ router.post('/customers/:username/invoices', async (req, res) => {
                 dateShipped: req.body.dateShipped, 
                 lineItems: req.body.lineItems
             }   
-        
+            
             user.invoices.push(newInvoice)
     
             //add status code
-            await Customers.save(user)
+            user.save()
+            res.json(user)
         }
     }
     catch (error) {
