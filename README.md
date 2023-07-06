@@ -1,5 +1,5 @@
 # web-420
-<h1>WEB 420 Restful APIsL</h1>
+<h1>WEB 420 Restful APIs</h1>
 <h2>Contributors</h2>
 <ul>
     <li>Robert Krasso</li>
