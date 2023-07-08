@@ -3,7 +3,7 @@
     Title: mclaurine-customer-routes.js, 
     Author: Trevor McLaurine
     Date: 7/3/2023
-    Description: Initializes the routes used for the composer API
+    Description: Initializes the routes used for the NodeShopper API
 */
 
 const express = require('express')
@@ -20,7 +20,7 @@ const router = express.Router();
  *     tags:
  *       - Customers
  *     name: createCustomers
- *     summary: Creates a new customer for the customer API
+ *     summary: Creates a new customer for the NodeShopper API
  *     requestBody:
  *       description: Information about the customer
  *       content:
@@ -39,25 +39,30 @@ const router = express.Router();
  *                 type: string
  *     responses:
  *       '200':
- *         description: Customer added to Customer API
+ *         description: Customer added to NodeShopper API
  *       '500':
  *         description: Server Exception
  *       '501':
  *         description: MongoDB Exception
  */
 router.post('/customers', async (req,res) => {
+    //Grabs information from the req.body function to initialize variables.
     const { firstName, lastName, userName } = req.body; 
 
     try{
+        //creates a new customer. Checks to see if all parameters are met
         const newCustomer = await Customers.create({ firstName, lastName, userName })
         if(!newCustomer){
+            //if all parameters are not met, throws an error
             res.status(500).send( { 'message': `MongoDB Exception 501`})
         }
         else {
+            //if successful, creates a new customer
             res.status(200).json(newCustomer);
         }
     }
     catch (error) {
+        //if the request is bad, throws an error
         res.status(501).json({ 'message': `Server Exception: ${error.message}` })
     }
 })
@@ -119,43 +124,16 @@ router.post('/customers', async (req,res) => {
  */
 router.post('/customers/:userName/invoices', async (req, res) => {
 
-    //Currently, model.create does not accept callback. I've placed the original code in comments to show that I understand the assignment
-    //But placed code that does work for the time being. 
-
-    // const newPerson = {
-    //     firstName: req.body.firstName,
-    //     lastName: req.body.lastName,
-    //     roles: req.body.roles,
-    //     dependents: req.body.dependents,
-    //     birthDate: req.body.birthDate
-    // } 
-
-    // try {
-    //     await Composer.create(newPerson, function(err, person) {
-    //         if(err) {
-    //             res.status.send({
-    //                 'message': `MongoDB Exception: ${err}`
-    //             })
-    //         }
-    //         else {
-    //             res.json(person)
-    //         }
-    //     })
-    // } catch(e) {
-    //     console.log(e)
-    //     res.status(500).send({
-    //         'message': `Server Exception: ${e.message}`
-    //     })
-    // }
-
     try{
+        // searches for a user based on the parameters written by the user
         const user = await Customers.findOne({ 'userName': req.params.userName })
-        console.log(user)
         if(!user){
+            // if no user is found, throws an error
             res.status(501).send({ 'message': 'MongoDB Exception'})
         }
         else
         {
+            //if a user is found, a new invoice object is created and initialized with the req.body values
             const newInvoice = {
                 subtotal: req.body.subtotal,
                 tax: req.body.tax,
@@ -163,15 +141,16 @@ router.post('/customers/:userName/invoices', async (req, res) => {
                 dateShipped: req.body.dateShipped, 
                 lineItems: req.body.lineItems
             }   
-            
+            // pushes the new object into an array already placed in the user's data
             user.invoices.push(newInvoice)
-    
-            //add status code
+            
+            //saves the new data to the database
             user.save()
-            res.json(user)
+            res.status(200).json(user)
         }
     }
     catch (error) {
+        //if unsuccessful, throws an error
         res.status(500).send({ 'message': `Server Exception: ${error.message} `})
     }
 })
@@ -203,41 +182,21 @@ router.post('/customers/:userName/invoices', async (req, res) => {
  */
 router.get('/customers/:userName/invoices', async (req,res) => {
 
-    //Currently, model.find does not accept callback. I've placed the original code in comments to show that I understand the assignment
-    //But placed code that does work for the time being. 
-
-    // try {
-    //     await Composer.find({}, function(err, composers) {
-    //         if(err) {
-    //             res.status(501).send({
-    //                 'message': `MongoDB Exception: ${err}`
-    //             })
-    //         }else {
-    //             res.json(composers);
-    //         }
-    //     })
-    // } catch(e) {
-    //     console.log(e)
-    //     res.status(500).send({
-    //         'message': `Server Exception: ${e.message}`
-    //     })
-    // }
-
     try {
-       
+        //searches for a user in the database
         const customers = await Customers.findOne({ 'userName': req.params.userName })
-        console.log(customers)
         if(!customers){
+            //if no user is found, throws an error
             res.status(501).send({ 'message': 'Mongo Exception Error'})
         }
         else
         {
-            //if successful, sets status to 200 and returns the list of composers.
+            //if successful, sets status to 200 and returns the customer.
             res.status(200).json(customers); 
         }
     }
     catch(e) {
-        //add error message
+        //if unsuccessful, throws an error
         res.status(500).send({ 'message': `Server Exception: ${e.message}`})
     }
 })
