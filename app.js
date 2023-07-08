@@ -19,7 +19,7 @@ const app = express();
 const composerRoutes = require('./routes/McLaurine-composer-routes')
 const peopleRoutes = require('./routes/McLaurine-people-routes')
 const sessionRoutes = require('./routes/McLaurine-session-routes')
-const customerRoutes = require('./routes/McLaurine-customer-routes')
+const customerRoutes = require('./routes/McLaurine-node-shopper-routes')
 
 //Tells express to use JSON
 app.use(express.json())
