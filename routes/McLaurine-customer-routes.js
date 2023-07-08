@@ -226,6 +226,7 @@ router.get('/customers/:userName/invoices', async (req,res) => {
     try {
        
         const customers = await Customers.findOne({ 'userName': req.params.userName })
+        console.log(customers)
         if(!customers){
             res.status(501).send({ 'message': 'Mongo Exception Error'})
         }
