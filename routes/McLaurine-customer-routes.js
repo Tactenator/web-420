@@ -162,8 +162,8 @@ router.post('/customers/:userName/invoices', async (req, res) => {
  *   get:
  *     tags:
  *       - Customers
- *     description: Returns a list of all composers from the composers API database
- *     summary: Returns the data for all composers
+ *     description: Returns a list of all customers from the NodeShoppers API database
+ *     summary: Returns the invoices for the userName specified
  *     parameters:
  *       - name: userName
  *         in: path
@@ -174,7 +174,7 @@ router.post('/customers/:userName/invoices', async (req, res) => {
  *     operationid: findAllInvoicesByUserName
  *     responses:
  *       '200':
- *         description: "Successful retrieval of documents from the composer API"
+ *         description: "Successful retrieval of documents from the NodeShoppers API"
  *       '500':
  *         description: "Server exceptions"
  *       '501':
