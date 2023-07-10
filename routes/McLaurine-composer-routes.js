@@ -110,7 +110,7 @@ router.delete('/composers/:id', async (req, res) => {
         if(!composer) {
             res.status(501).json({ error: 'MongoDB Exception'})
         }
-        Composer.findByIdAndDelete({ '_id': composer })
+        await Composer.findByIdAndDelete({ '_id': req.params.id })
         res.status(200).json(composer)
     }
     catch (e) {
