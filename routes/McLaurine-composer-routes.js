@@ -77,6 +77,47 @@ router.get('/composers', async (req,res) => {
  *       '501':
  *         description: "MongoDB exceptions"
  */
+
+/**
+ * deleteComposer
+ * @openapi
+ * /api/composers/{id}:
+ *   delete:
+ *     tags:
+ *       - Composers
+ *     name: deleteComposers
+ *     description: Deletes a composer from the Composers API.
+ *     summary: Removes a document from Composers.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Id of the document to be removed from the API.
+ *         schema: 
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Composer deleted
+ *       '500':
+ *         description: Server Exception
+ *       '501':
+ *         description: MongoDB Exception
+ */
+
+router.delete('/composers/:id', async (req, res) => {
+    try {
+        const composer = await Composer.findOne({ '_id': req.params.id })
+        if(!composer) {
+            res.status(501).json({ error: 'MongoDB Exception'})
+        }
+        Composer.findByIdAndDelete({ '_id': composer })
+        res.status(200).json(composer)
+    }
+    catch (e) {
+        res.status(500).json({ error: `Server Exception ${e.message}` })
+    }
+})
+
 router.get('/composers/:id', async (req, res) => {
 
     //Currently, model.find does not accept callback. I've placed the original code in comments to show that I understand the assignment
@@ -256,43 +297,4 @@ router.put('/composers/:id', async (req, res) => {
     }
 })
 
-/**
- * deleteComposer
- * @openapi
- * /api/composers/{id}:
- *   delete:
- *     tags:
- *       - Composers
- *     name: deleteComposers
- *     description: Deletes a composer from the Composers API.
- *     summary: Removes a document from Composers.
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         description: Id of the document to be removed from the API.
- *         schema: 
- *           type: string
- *     responses:
- *       '200':
- *         description: Composer deleted
- *       '500':
- *         description: Server Exception
- *       '501':
- *         description: MongoDB Exception
- */
-
-router.delete('/composers/:id', async (req, res) => {
-    try {
-        const composer = Composer.findOne({ '_id': req.params.id })
-        if(!composer) {
-            res.status(501).json({ error: 'MongoDB Exception'})
-        }
-        Composer.findByIdAndDelete({ '_id': composer })
-        res.status(200).json(composer)
-    }
-    catch (e) {
-        res.status(500).json({ error: `Server Exception ${e.message}` })
-    }
-})
 module.exports = router; 
