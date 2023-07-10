@@ -62,7 +62,7 @@ router.get('/composers', async (req,res) => {
 /**
  * findComposerById
  * @openapi
- * /api/composers/:id:
+ * /api/composers/{id}:
  *   get:
  *     tags:
  *       - Composers
@@ -197,21 +197,22 @@ router.post('/composers', async (req, res) => {
 /**
  * updateComposerById
  * @openapi
- * /api/composers/{id}
+ * /api/composers/{id}:
  *   put:
  *     tags:
- *       - Customers
+ *       - Composers
  *     name: updateComposerById
- *     summary: Updates information on the composer.
+ *     description: Updates an existing composer document
+ *     summary: Updates a composer's information
  *     parameters:
- *      - name: Id
- *        in: path
- *        required: true
- *        description: Id that belongs to the composer
- *        schema: 
- *          type: string
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Id of the composer to update. 
+ *         schema: 
+ *           type: string
  *     requestBody:
- *       description: Information about the composer
+ *       description: Composer information
  *       content:
  *         application/json:
  *           schema:
@@ -219,15 +220,13 @@ router.post('/composers', async (req, res) => {
  *               - firstName
  *               - lastName
  *             properties:
- *               subtotal:
+ *               firstName:
  *                 type: string
- *               tax:
+ *               lastName:
  *                 type: string
  *     responses:
  *       '200':
- *         description:  Composer updated
- *       '401':
- *         description: Invalid Composer ID
+ *         description: Composer updated
  *       '500':
  *         description: Server Exception
  *       '501':
@@ -237,7 +236,7 @@ router.post('/composers', async (req, res) => {
 router.put('/composers/:id', async (req, res) => {
 
     try{
-        const composer = Composer.findOne({ '_id': req.params.id })
+        const composer = await Composer.findOne({ '_id': req.params.id })
         if(!composer){
             res.status(401).json({ error: 'Invalid Composer Id'})
         }
@@ -247,15 +246,8 @@ router.put('/composers/:id', async (req, res) => {
                 lastName: req.body.lastName
             })
 
-            composer.save(function(err, updatedComposer) {
-                if(err){
-                    console.log(err)
-                    res.status(501).json(updatedComposer)
-                }
-                else {
-                    res.status(200).json(updatedComposer)
-                }
-            })
+            composer.save()
+            res.status(200).json(composer)
         }
     }
     catch (error) {
