@@ -78,46 +78,6 @@ router.get('/composers', async (req,res) => {
  *         description: "MongoDB exceptions"
  */
 
-/**
- * deleteComposer
- * @openapi
- * /api/composers/{id}:
- *   delete:
- *     tags:
- *       - Composers
- *     name: deleteComposers
- *     description: Deletes a composer from the Composers API.
- *     summary: Removes a document from Composers.
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         description: Id of the document to be removed from the API.
- *         schema: 
- *           type: string
- *     responses:
- *       '200':
- *         description: Composer deleted
- *       '500':
- *         description: Server Exception
- *       '501':
- *         description: MongoDB Exception
- */
-
-router.delete('/composers/:id', async (req, res) => {
-    try {
-        const composer = await Composer.findOne({ '_id': req.params.id })
-        if(!composer) {
-            res.status(501).json({ error: 'MongoDB Exception'})
-        }
-        await Composer.findByIdAndDelete({ '_id': req.params.id })
-        res.status(200).json(composer)
-    }
-    catch (e) {
-        res.status(500).json({ error: `Server Exception ${e.message}` })
-    }
-})
-
 router.get('/composers/:id', async (req, res) => {
 
     //Currently, model.find does not accept callback. I've placed the original code in comments to show that I understand the assignment
@@ -277,23 +237,71 @@ router.post('/composers', async (req, res) => {
 router.put('/composers/:id', async (req, res) => {
 
     try{
+        //Searches for composer from the composer database
         const composer = await Composer.findOne({ '_id': req.params.id })
+        //if no composer exists, throws an error
         if(!composer){
             res.status(401).json({ error: 'Invalid Composer Id'})
         }
         else {
+            //otherwise, sets the new composer data
             composer.set({ 
                 firstName: req.body.firstName,
                 lastName: req.body.lastName
             })
 
+            //saves the new composer data to the database
             composer.save()
             res.status(200).json(composer)
         }
     }
     catch (error) {
-        //if an error occurs, an error message is displayed in the console
+        //throws an error if something goes wrong
         res.status(500).json({ error: error.message })
+    }
+})
+
+/**
+ * deleteComposer
+ * @openapi
+ * /api/composers/{id}:
+ *   delete:
+ *     tags:
+ *       - Composers
+ *     name: deleteComposers
+ *     description: Deletes a composer from the Composers API.
+ *     summary: Removes a document from Composers.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Id of the document to be removed from the API.
+ *         schema: 
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Composer deleted
+ *       '500':
+ *         description: Server Exception
+ *       '501':
+ *         description: MongoDB Exception
+ */
+
+router.delete('/composers/:id', async (req, res) => {
+    try {
+        //checks to see if the composer with the designated id exists
+        const composer = await Composer.findOne({ '_id': req.params.id })
+        if(!composer) {
+            //if not, throws an error
+            res.status(501).json({ error: 'MongoDB Exception'})
+        }
+        //searches for composer based on the parameters and deletes it
+        await Composer.findByIdAndDelete({ '_id': req.params.id })
+        res.status(200).json(composer)
+    }
+    catch (e) {
+        //if anything goes wrong, throws an error
+        res.status(500).json({ error: `Server Exception ${e.message}` })
     }
 })
 
