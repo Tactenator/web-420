@@ -55,7 +55,7 @@ router.post('/teams', async (req,res) => {
         }
         else {
             //if successful, creates a new customer
-            res.status(200).json(newCustomer);
+            res.status(200).json(newTeam);
         }
     }
     catch (error) {
@@ -65,19 +65,64 @@ router.post('/teams', async (req,res) => {
 })
 
 /**
- * createInvoiceByUserName
+ * findAllTeams
  * @openapi
- * /api/customers/{userName}/invoices:
+ * /api/teams:
+ *   get:
+ *     tags:
+ *       - Teams
+ *     description: Returns a list of all teams from the Teams API database
+ *     summary: Returns the data for all of the teams
+ *     operationid: findAllTeams
+ *     responses:
+ *       '200':
+ *         description: "Successful retrieval of documents from the Teams API"
+ *       '500':
+ *         description: "Server exceptions"
+ *       '501':
+ *         description: "MongoDB exceptions"
+ */
+router.get('/teams', async (req,res) => {
+
+    //Currently, model.find does not accept callback. I've placed the original code in comments to show that I understand the assignment
+    //But placed code that does work for the time being. 
+
+    // try {
+    //     await People.find({}, function(err, people) {
+    //         if(err) {
+    //             res.status(501).send({
+    //                 'message': `MongoDB Exception: ${err}`
+    //             })
+    //         }else {
+    //             res.json(people);
+    //         }
+    //     })
+    // } catch(e) {
+    //     console.log(e)
+    //     res.status(500).send({
+    //         'message': `Server Exception: ${e.message}`
+    //     })
+    // }
+
+    const teams = await Teams.find({ })
+
+    res.status(200).json(teams); 
+})
+
+/**
+ * assignPlayerToTeam
+ * @openapi
+ * /api/teams/{id}/players:
  *   post:
  *     tags:
- *       - Customers
- *     name: createInvoiceByUserName
- *     summary: Creates a new invoice based on the username
+ *       - Teams
+ *     name: assignPlayerToTeam
+ *     summary: Pushes a player to a team's array
  *     parameters:
- *      - name: userName
+ *      - name: id
  *        in: path
  *        required: true
- *        description: Username that belongs to the invoice 
+ *        description: Id of the team that the player will join 
  *        schema: 
  *          type: string
  *     requestBody:
@@ -119,82 +164,34 @@ router.post('/teams', async (req,res) => {
  *       '501':
  *         description: MongoDB Exception
  */
-router.post('/customers/:userName/invoices', async (req, res) => {
+router.post('/teams/:id/players', async (req, res) => {
 
     try{
         // searches for a user based on the parameters written by the user
-        const user = await Customers.findOne({ 'userName': req.params.userName })
-        if(!user){
+        const team = await teams.findOne({ '_id': req.params._id })
+        if(!team){
             // if no user is found, throws an error
             res.status(501).send({ 'message': 'MongoDB Exception'})
         }
         else
         {
             //if a user is found, a new invoice object is created and initialized with the req.body values
-            const newInvoice = {
-                subtotal: req.body.subtotal,
-                tax: req.body.tax,
-                dateCreated: req.body.dateCreated,
-                dateShipped: req.body.dateShipped, 
-                lineItems: req.body.lineItems
+            const newPlayer = {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                salary: req.body.salary,
             }   
             // pushes the new object into an array already placed in the user's data
-            user.invoices.push(newInvoice)
+            team.players.push(newPlayer)
             
             //saves the new data to the database
-            user.save()
-            res.status(200).json(user)
+            team.save()
+            res.status(200).json(team)
         }
     }
     catch (error) {
         //if unsuccessful, throws an error
         res.status(500).send({ 'message': `Server Exception: ${error.message} `})
-    }
-})
-
-/**
- * findAllInvoicesByUserName
- * @openapi
- * /api/customers/{userName}/invoices:
- *   get:
- *     tags:
- *       - Customers
- *     description: Returns a list of all customers from the NodeShoppers API database
- *     summary: Returns the invoices for the userName specified
- *     parameters:
- *       - name: userName
- *         in: path
- *         required: true
- *         description: Username that belongs to the invoice 
- *         schema: 
- *           type: string
- *     operationid: findAllInvoicesByUserName
- *     responses:
- *       '200':
- *         description: "Successful retrieval of documents from the NodeShoppers API"
- *       '500':
- *         description: "Server exceptions"
- *       '501':
- *         description: "MongoDB exceptions"
- */
-router.get('/customers/:userName/invoices', async (req,res) => {
-
-    try {
-        //searches for a user in the database
-        const customers = await Customers.findOne({ 'userName': req.params.userName })
-        if(!customers){
-            //if no user is found, throws an error
-            res.status(501).send({ 'message': 'Mongo Exception Error'})
-        }
-        else
-        {
-            //if successful, sets status to 200 and returns the customer.
-            res.status(200).json(customers); 
-        }
-    }
-    catch(e) {
-        //if unsuccessful, throws an error
-        res.status(500).send({ 'message': `Server Exception: ${e.message}`})
     }
 })
 

@@ -20,6 +20,7 @@ const composerRoutes = require('./routes/McLaurine-composer-routes')
 const peopleRoutes = require('./routes/McLaurine-people-routes')
 const sessionRoutes = require('./routes/McLaurine-session-routes')
 const customerRoutes = require('./routes/McLaurine-node-shopper-routes')
+const teamsRoutes = require('./routes/McLaurine-teams-routes')
 
 //Tells express to use JSON
 app.use(express.json())
@@ -59,6 +60,7 @@ app.use('/api', composerRoutes)
 app.use('/api', peopleRoutes)
 app.use('/api', sessionRoutes)
 app.use('/api', customerRoutes)
+app.use('/api', teamsRoutes)
 //Initializes the api-docs utilizing swaggerUI
 app.use('/api-docs', swaggerUIExpress.serve, swaggerUIExpress.setup(openapiSpecification));
 
