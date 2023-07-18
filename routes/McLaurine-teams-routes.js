@@ -126,39 +126,24 @@ router.get('/teams', async (req,res) => {
  *        schema: 
  *          type: string
  *     requestBody:
- *       description: Information about the person
+ *       description: Information about the player
  *       content:
  *         application/json:
  *           schema:
  *             required:
- *               - subtotal
- *               - tax
- *               - dateCreated
- *               - dateShipped
- *               - lineItems
+ *               - firstName
+ *               - lastName
+ *               - salary
  *             properties:
- *               subtotal:
- *                 type: number
- *               tax:
- *                 type: number
- *               dateCreated:
+ *               firstName:
  *                 type: string
- *               dateShipped: 
+ *               lastName:
  *                 type: string
- *               lineItems:
- *                 type: array
- *                 items:
- *                   type: object
- *                   properties:
- *                     name:
- *                       type: string
- *                     price:
- *                       type: string
- *                     quantity: 
- *                       type: string
+ *               salary:
+ *                 type: number
  *     responses:
  *       '200':
- *         description:  New invoice created
+ *         description:  New player created and added to team
  *       '500':
  *         description: Server Exception
  *       '501':
@@ -192,6 +177,50 @@ router.post('/teams/:id/players', async (req, res) => {
     catch (error) {
         //if unsuccessful, throws an error
         res.status(500).send({ 'message': `Server Exception: ${error.message} `})
+    }
+})
+
+/**
+ * deleteTeamById
+ * @openapi
+ * /api/teams/{id}:
+ *   delete:
+ *     tags:
+ *       - Teams
+ *     name: deleteTeamById
+ *     description: Deletes a team by the Id.
+ *     summary: Removes a document from the Teams API.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Id of the document to be removed from the API.
+ *         schema: 
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Team deleted
+ *       '500':
+ *         description: Server Exception
+ *       '501':
+ *         description: MongoDB Exception
+ */
+
+router.delete('/teams/:id', async (req, res) => {
+    try {
+        //checks to see if the composer with the designated id exists
+        const team = await Teams.findOne({ '_id': req.params.id })
+        if(!team) {
+            //if not, throws an error
+            res.status(501).json({ error: 'MongoDB Exception'})
+        }
+        //searches for composer based on the parameters and deletes it
+        await Teams.findByIdAndDelete({ '_id': req.params.id })
+        res.status(200).json(team)
+    }
+    catch (e) {
+        //if anything goes wrong, throws an error
+        res.status(500).json({ error: `Server Exception ${e.message}` })
     }
 })
 
