@@ -8,6 +8,21 @@
 
 const mongoose = require('mongoose');
 
+const playerSchema = new mongoose.Schema({
+    "firstName":
+    { 
+        type: String, 
+    },
+    "lastName": 
+    {
+        type: String, 
+        
+    },
+    "salary": {
+        type: Number
+    }
+});
+
 //initializes the composer Schema
 const teamSchema = new mongoose.Schema({
     "name":
@@ -22,21 +37,6 @@ const teamSchema = new mongoose.Schema({
     "players": 
     {
         type: [playerSchema]
-    }
-});
-
-const playerSchema = new mongoose.Schema({
-    "firstName":
-    { 
-        type: String, 
-    },
-    "lastName": 
-    {
-        type: String, 
-        
-    },
-    "salary": {
-        type: Number
     }
 });
 
