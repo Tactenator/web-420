@@ -153,7 +153,7 @@ router.post('/teams/:id/players', async (req, res) => {
 
     try{
         // searches for a user based on the parameters written by the user
-        const team = await teams.findOne({ '_id': req.params._id })
+        const team = await Teams.findOne({ '_id': req.params.id })
         if(!team){
             // if no user is found, throws an error
             res.status(501).send({ 'message': 'MongoDB Exception'})
