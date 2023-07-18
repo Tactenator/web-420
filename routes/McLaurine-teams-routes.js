@@ -225,7 +225,7 @@ router.get('/teams/:id/players', async (req,res) => {
          const team = await Teams.findOne({ '_id': req.params.id })
          if(!team) {
              //if not, throws an error
-             res.status(501).json({ error: 'MongoDB Exception'})
+             res.status(401).json({ error: 'MongoDB Exception'})
          }
         else
         {
