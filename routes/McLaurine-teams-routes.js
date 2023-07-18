@@ -43,18 +43,19 @@ const router = express.Router();
  *         description: MongoDB Exception
  */
 router.post('/teams', async (req,res) => {
+
     //Grabs information from the req.body function to initialize variables.
     const { name, mascot } = req.body; 
 
     try{
-        //creates a new customer. Checks to see if all parameters are met
+        //creates a new team. Checks to see if all parameters are met
         const newTeam = await Teams.create({ name, mascot })
         if(!newTeam){
             //if all parameters are not met, throws an error
             res.status(500).send( { 'message': `MongoDB Exception 501`})
         }
         else {
-            //if successful, creates a new customer
+            //if successful, creates a new teams
             res.status(200).json(newTeam);
         }
     }
@@ -104,8 +105,12 @@ router.get('/teams', async (req,res) => {
     //     })
     // }
 
+    // TODO: add a try and catch
+
+    //Searches the database for all teams
     const teams = await Teams.find({ })
 
+    //returns the teams that are found
     res.status(200).json(teams); 
 })
 
@@ -152,21 +157,21 @@ router.get('/teams', async (req,res) => {
 router.post('/teams/:id/players', async (req, res) => {
 
     try{
-        // searches for a user based on the parameters written by the user
+        // searches for a team based on the parameters written by the user
         const team = await Teams.findOne({ '_id': req.params.id })
         if(!team){
-            // if no user is found, throws an error
+            // if no team is found, throws an error
             res.status(501).send({ 'message': 'MongoDB Exception'})
         }
         else
         {
-            //if a user is found, a new invoice object is created and initialized with the req.body values
+            //if a team is found, a new invoice object is created and initialized with the req.body values
             const newPlayer = {
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 salary: req.body.salary,
             }   
-            // pushes the new object into an array already placed in the user's data
+            // pushes the new object into an array already placed in the team's data
             team.players.push(newPlayer)
             
             //saves the new data to the database
@@ -208,13 +213,13 @@ router.post('/teams/:id/players', async (req, res) => {
 
 router.delete('/teams/:id', async (req, res) => {
     try {
-        //checks to see if the composer with the designated id exists
+        //checks to see if the teams with the designated id exists
         const team = await Teams.findOne({ '_id': req.params.id })
         if(!team) {
             //if not, throws an error
             res.status(501).json({ error: 'MongoDB Exception'})
         }
-        //searches for composer based on the parameters and deletes it
+        //searches for teams based on the parameters and deletes it
         await Teams.findByIdAndDelete({ '_id': req.params.id })
         res.status(200).json(team)
     }
