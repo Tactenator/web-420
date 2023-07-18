@@ -105,13 +105,21 @@ router.get('/teams', async (req,res) => {
     //     })
     // }
 
-    // TODO: add a try and catch
-
-    //Searches the database for all teams
-    const teams = await Teams.find({ })
-
-    //returns the teams that are found
-    res.status(200).json(teams); 
+    
+    try {
+        //Searches the database for all teams
+        const teams = await Teams.find({ })
+        if(!teams){
+            res.status(501).json({ 'message': 'MongoDb Exception' })
+        }
+        else {
+            //returns the teams that are found
+            res.status(200).json(teams); 
+        }
+    }
+    catch (error) {
+        res.status(501).json({ 'message': `Server Exception: ${error.message}` })
+    }
 })
 
 /**
@@ -182,6 +190,52 @@ router.post('/teams/:id/players', async (req, res) => {
     catch (error) {
         //if unsuccessful, throws an error
         res.status(500).send({ 'message': `Server Exception: ${error.message} `})
+    }
+})
+
+/**
+ * findAllPlayersByTeamId
+ * @openapi
+ * /api/teams/{id}/players:
+ *   get:
+ *     tags:
+ *       - Teams
+ *     description: Returns a list of all players in a team on from the Teams API
+ *     summary: Returns the list of players on a team
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Id that belongs to the team
+ *         schema: 
+ *           type: string
+ *     operationid: findAllPlayersByTeamId
+ *     responses:
+ *       '200':
+ *         description: "Successful retrieval of documents from the NodeShoppers API"
+ *       '500':
+ *         description: "Server exceptions"
+ *       '501':
+ *         description: "MongoDB exceptions"
+ */
+router.get('/teams/:id/players', async (req,res) => {
+
+    try {
+         //checks to see if the teams with the designated id exists
+         const team = await Teams.findOne({ '_id': req.params.id })
+         if(!team) {
+             //if not, throws an error
+             res.status(501).json({ error: 'MongoDB Exception'})
+         }
+        else
+        {
+            //if successful, sets status to 200 and returns the customer.
+            res.status(200).json(team.players); 
+        }
+    }
+    catch(e) {
+        //if unsuccessful, throws an error
+        res.status(500).send({ 'message': `Server Exception: ${e.message}`})
     }
 })
 
