@@ -1,9 +1,9 @@
 /*
     ==================
-    Title: mclaurine-customer-routes.js, 
+    Title: mclaurine-teams-routes.js, 
     Author: Trevor McLaurine
-    Date: 7/3/2023
-    Description: Initializes the routes used for the NodeShopper API
+    Date: 7/18/2023
+    Description: Initializes the routes used for the Teams API
 */
 
 const express = require('express')
@@ -85,27 +85,6 @@ router.post('/teams', async (req,res) => {
  */
 router.get('/teams', async (req,res) => {
 
-    //Currently, model.find does not accept callback. I've placed the original code in comments to show that I understand the assignment
-    //But placed code that does work for the time being. 
-
-    // try {
-    //     await People.find({}, function(err, people) {
-    //         if(err) {
-    //             res.status(501).send({
-    //                 'message': `MongoDB Exception: ${err}`
-    //             })
-    //         }else {
-    //             res.json(people);
-    //         }
-    //     })
-    // } catch(e) {
-    //     console.log(e)
-    //     res.status(500).send({
-    //         'message': `Server Exception: ${e.message}`
-    //     })
-    // }
-
-    
     try {
         //Searches the database for all teams
         const teams = await Teams.find({ })
@@ -212,7 +191,7 @@ router.post('/teams/:id/players', async (req, res) => {
  *     operationid: findAllPlayersByTeamId
  *     responses:
  *       '200':
- *         description: "Successful retrieval of documents from the NodeShoppers API"
+ *         description: "Successful retrieval of documents from the Teams API"
  *       '500':
  *         description: "Server exceptions"
  *       '501':
@@ -229,7 +208,7 @@ router.get('/teams/:id/players', async (req,res) => {
          }
         else
         {
-            //if successful, sets status to 200 and returns the customer.
+            //if successful, sets status to 200 and returns the player information.
             res.status(200).json(team.players); 
         }
     }
